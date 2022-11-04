@@ -1,30 +1,20 @@
-import { KeyboardEvent, KeyboardEventHandler, useCallback, useEffect } from 'react';
+import { KeyboardEvent, useCallback, useEffect } from 'react';
+import { hotkeyCallback } from './utils/hotkeyCallback';
+import { hotkeysCallback } from './utils/hotkeysCallback';
 
-const useHotkeys = (key: string, _callback: (e: KeyboardEvent) => void) => {
-  const callback = useCallback<KeyboardEventHandler>((e) => {
-    const keys = key.split('+')
-    
-    if (keys.includes('ctrl') && !e.ctrlKey) return
-    if (keys.includes('shift') && !e.shiftKey) return
-    if (keys.includes('alt') && !e.altKey) return
-
-    const _key = keys.reduce((acc, cur) => {
-      if (cur !== 'ctrl' && cur !== 'alt' && cur !== 'shift') {
-        acc += cur
-      }
-      return acc
-    }, '')
-
-    if (e.key === _key) {
-      console.log(e, e.key, _key)
-      _callback(e)
+const useHotkeys = (key: string | string[], _callback: (e: KeyboardEvent) => void) => {
+  const callback = useCallback((e: KeyboardEvent) => {
+    if (Array.isArray(key)) {
+      hotkeysCallback(key, _callback, e)
+    } else {
+      hotkeyCallback(key, _callback, e)
     }
   }, [key, _callback])
 
   useEffect(() => {
-    window.addEventListener('keydown', callback as unknown as EventListenerObject)
+    window.addEventListener('keydown', callback as any)
 
-    return () => window.removeEventListener('keydown', callback as unknown as EventListener)
+    return () => window.removeEventListener('keydown', callback as any)
   }, [callback])
 }
 
