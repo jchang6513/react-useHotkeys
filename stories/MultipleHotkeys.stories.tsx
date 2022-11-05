@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import useHotkeys from '../src';
 
 const meta: Meta = {
-  title: 'useHotkeys',
+  title: 'Multiple Hotkeys',
   argTypes: {
     hotkey1: {
       defaultValue: '',
@@ -28,7 +28,7 @@ const meta: Meta = {
       control: {
         type: 'text',
       },
-    },    
+    },
   },
   parameters: {
     controls: { expanded: true },
@@ -39,7 +39,10 @@ export default meta;
 
 const Template: Story = args => {
   const { hotkey1, hotkey2, hotkey3, hotkey4 } = args
-  const key = useMemo(() => [hotkey1, hotkey2, hotkey3, hotkey4], [hotkey1, hotkey2, hotkey3, hotkey4])
+  const key = useMemo(
+    () => [hotkey1, hotkey2, hotkey3, hotkey4].filter(Boolean),
+    [hotkey1, hotkey2, hotkey3, hotkey4],
+  )
 
   const [count, setCount] = useState(0)
 
@@ -48,15 +51,16 @@ const Template: Story = args => {
   }, [])
 
   useHotkeys(key, callback)
-  
+
   useEffect(() => {
     setCount(0)
   }, [key])
 
   return (
     <div>
-      <div>Multiple hotkeys</div>
-      <div>Hotkey: {key.join(', ')}</div>
+      <h2>Multiple Hotkeys</h2>
+      <br />
+      <div>Hotkeys: {key.join(', ')}</div>
       <div>Trigger Count: {count}</div>
     </div>
 

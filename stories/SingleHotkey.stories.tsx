@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import useHotkeys from '../src';
 
 const meta: Meta = {
-  title: 'useHotkeys',
+  title: 'Single Hotkey',
   argTypes: {
     key: {
       defaultValue: '',
@@ -28,23 +28,23 @@ const Template: Story = args => {
   }, [])
 
   useHotkeys(key, callback)
-  
+
   useEffect(() => {
     setCount(0)
   }, [key])
 
   return (
     <div>
-      <div>Simple hotkeys</div>
+      <h2>Simple Hotkey</h2>
+      <br />
       <div>Hotkey: {key}</div>
       <div>Trigger Count: {count}</div>
     </div>
-
   )
 };
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing
-export const Default = Template.bind({});
+export const SingleHotkey = Template.bind({});
 
-Default.args = {};
+SingleHotkey.args = {};

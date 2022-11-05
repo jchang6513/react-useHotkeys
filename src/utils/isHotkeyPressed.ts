@@ -13,5 +13,6 @@ export const isHotkeyPressed = (hotkey: string, e: KeyboardEvent) => {
     }
     return acc
   }, '')
+  
   return !_key || e.key.toLowerCase() === _key
 }
